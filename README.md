@@ -40,6 +40,40 @@ uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 Open: http://127.0.0.1:8000
 
-## Production note
-To support drivers off Walmart network, deploy this app to an internet-accessible host with HTTPS.
-Use the deployed URL as `PUBLIC_URL`, then print/display the QR code from `/qr`.
+## Deploy for off-network access (Render)
+This project includes `render.yaml` and a `Dockerfile` so you can deploy quickly.
+
+### 1) Push this repo to GitHub
+
+```bash
+git remote add origin <your-github-repo-url>
+git push -u origin master
+```
+
+### 2) Create the Render web service
+1. Sign in to Render
+2. New + → Blueprint
+3. Select your GitHub repo
+4. Render will detect `render.yaml`
+
+### 3) Set secret environment variables in Render
+- `SMTP_USER`
+- `SMTP_PASSWORD`
+- `MAIL_FROM`
+
+Already preconfigured in blueprint:
+- `SMTP_HOST=smtp.office365.com`
+- `SMTP_PORT=587`
+- `SMTP_USE_TLS=true`
+- `MAIL_TO=6077cro@walmart.com`
+
+### 4) Set `PUBLIC_URL`
+After deploy, set `PUBLIC_URL` to your Render app URL, for example:
+`https://swing-door-driver-intake.onrender.com`
+
+### 5) Verify
+- Health: `https://<your-url>/health`
+- Form: `https://<your-url>/`
+- QR image: `https://<your-url>/qr`
+
+Use the final `https://<your-url>/` in printed QR codes for drivers.

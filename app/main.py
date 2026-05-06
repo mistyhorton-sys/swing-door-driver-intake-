@@ -22,7 +22,7 @@ SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
 SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
 MAIL_FROM = os.getenv("MAIL_FROM", SMTP_USER)
 MAIL_TO = os.getenv("MAIL_TO", "6077cro@walmart.com")
-PUBLIC_URL = os.getenv("PUBLIC_URL", "http://127.0.0.1:8000")
+PUBLIC_URL = os.getenv("PUBLIC_URL", "").strip()
 
 app = FastAPI(title="Swing Door Driver Intake")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
@@ -86,9 +86,23 @@ def _send_email(
         smtp.send_message(msg)
 
 
+def _resolve_public_url(request: Request) -> str:
+    if PUBLIC_URL:
+        return PUBLIC_URL.rstrip("/")
+
+    return str(request.base_url).rstrip("/")
+
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(request, "index.html", {"request": request, "public_url": PUBLIC_URL})
+    return templates.TemplateResponse(
+        request,
+        "index.html",
+        {
+            "request": request,
+            "public_url": _resolve_public_url(request),
+        },
+    )
 
 
 @app.get("/health")
@@ -97,8 +111,8 @@ async def health() -> dict[str, str]:
 
 
 @app.get("/qr")
-async def qr_code(url: str | None = None) -> Response:
-    target = url or PUBLIC_URL
+async def qr_code(request: Request, url: str | None = None) -> Response:
+    target = (url or _resolve_public_url(request)).strip()
     qr = qrcode.QRCode(border=2, box_size=10)
     qr.add_data(target)
     qr.make(fit=True)
