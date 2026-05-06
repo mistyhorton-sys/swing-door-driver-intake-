@@ -87,8 +87,8 @@ Then deploy your source (recommended from Azure Portal Deployment Center using t
 
 Use the **Form URL** as your QR destination for drivers.
 
-## No-credit-card deployment option (GitHub Pages + FormSubmit)
-If cloud platforms ask for payment setup, use this free path:
+## No-credit-card deployment option (GitHub Pages + M365 links)
+If cloud platforms ask for payment setup or third-party relays are blocked:
 
 1. Go to GitHub repo **Settings → Pages**
 2. Under **Build and deployment**:
@@ -103,7 +103,11 @@ Public URL format:
 For this repo, expected URL:
 `https://mistyhorton-sys.github.io/swing-door-driver-intake-/`
 
-### Email behavior
-- The static form posts to FormSubmit and forwards to `6077cro@walmart.com`
-- First submission triggers a one-time verification email to activate forwarding
-- A recipient must click the verification link once
+### M365 setup
+- Create a public Microsoft Form for driver details
+- Create a OneDrive Request Files link for photo uploads
+- Paste both links in `docs/index.html` constants:
+  - `DATA_FORM_URL`
+  - `FILE_UPLOAD_URL`
+
+Detailed setup steps are in: `docs/m365-setup.md`
