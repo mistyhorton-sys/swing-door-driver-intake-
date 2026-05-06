@@ -1,0 +1,17 @@
+[project]
+name = "swing-door-driver-intake"
+version = "0.1.0"
+description = "Inbound driver intake app for door, trailer disconnect, and wheel chock photo verification"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.116.0",
+  "uvicorn>=0.35.0",
+  "jinja2>=3.1.6",
+  "python-multipart>=0.0.20",
+  "qrcode>=8.2",
+  "pillow>=11.3.0",
+]
+
+[tool.uv]
+package = false
