@@ -100,7 +100,14 @@ byId("intakeForm").addEventListener("submit", async (event) => {
     });
 
     if (!response.ok) {
-      throw new Error("Request failed");
+      let detail = "Request failed";
+      try {
+        const payload = await response.json();
+        detail = payload.detail || detail;
+      } catch (_e) {
+        // no-op
+      }
+      throw new Error(detail);
     }
 
     byId("intakeForm").reset();
@@ -108,8 +115,8 @@ byId("intakeForm").addEventListener("submit", async (event) => {
     applyLanguage(lang);
     status.textContent = t.success;
     status.className = "text-sm text-[#2a8703]";
-  } catch (_error) {
-    status.textContent = t.failed;
+  } catch (error) {
+    status.textContent = `${t.failed} ${error.message || ""}`.trim();
     status.className = "text-sm text-[#ea1100]";
   } finally {
     button.disabled = false;
