@@ -103,11 +103,10 @@ Public URL format:
 For this repo, expected URL:
 `https://mistyhorton-sys.github.io/swing-door-driver-intake-/`
 
-### M365 setup
-- Create a public Microsoft Form for driver details
-- Create a OneDrive Request Files link for photo uploads
-- Paste both links in `docs/index.html` constants:
-  - `DATA_FORM_URL`
+### M365 setup (Option 1)
+- Create OneDrive Request Files link for driver photo uploads
+- Paste upload link in `docs/index.html` constant:
   - `FILE_UPLOAD_URL`
+- Use an internal associate form/list to capture metadata (Intake ID, door, trailer, language)
 
 Detailed setup steps are in: `docs/m365-setup.md`

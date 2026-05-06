@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inbound Driver Safety Intake</title>
+    <title>Inbound Driver Photo Upload</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   </head>
   <body class="bg-white text-gray-800 min-h-screen">
     <main class="max-w-xl mx-auto p-4 sm:p-6">
       <section class="rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm">
-        <h1 id="title" class="text-2xl font-bold mb-2 text-[#0053e2]">Inbound Driver Safety Intake</h1>
-        <p id="subtitle" class="mb-6 text-gray-700">Please complete both steps before unloading.</p>
+        <h1 id="title" class="text-2xl font-bold mb-2 text-[#0053e2]">Inbound Driver Photo Upload</h1>
+        <p id="subtitle" class="mb-4 text-gray-700">Upload 3 safety photos before unloading.</p>
 
         <div class="space-y-4">
           <div>
@@ -24,22 +24,26 @@
             </select>
           </div>
 
+          <div class="rounded-lg bg-gray-50 border border-gray-200 p-3">
+            <p class="text-sm font-semibold text-gray-900 mb-1" id="intake_label">Intake ID</p>
+            <div class="flex gap-2">
+              <input id="intakeId" readonly class="flex-1 border border-gray-300 rounded-lg p-2 bg-white text-sm" />
+              <button id="copyBtn" class="px-3 py-2 rounded-lg border border-gray-400 text-sm">Copy</button>
+            </div>
+            <p id="intake_help" class="text-xs text-gray-600 mt-2">Show this Intake ID to the Walmart associate.</p>
+          </div>
+
           <ol class="list-decimal pl-5 space-y-2 text-sm text-gray-700">
-            <li id="step1">Open the Driver Information Form and submit your details.</li>
-            <li id="step2">Open the Photo Upload link and upload 3 photos:
-              <ul class="list-disc pl-5 mt-1">
-                <li id="photo1">Door photo</li>
-                <li id="photo2">Disconnected trailer photo</li>
-                <li id="photo3">Chocked wheels photo</li>
-              </ul>
-            </li>
+            <li id="step1">Take and upload 3 photos:</li>
+            <ul class="list-disc pl-5 mt-1">
+              <li id="photo1">Door photo</li>
+              <li id="photo2">Disconnected trailer photo</li>
+              <li id="photo3">Chocked wheels photo</li>
+            </ul>
+            <li id="step2">Tell the associate your Intake ID.</li>
           </ol>
 
-          <a id="dataFormBtn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-[#0053e2] hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
-            Open Driver Information Form
-          </a>
-
-          <a id="uploadBtn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full text-center border border-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-50">
+          <a id="uploadBtn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-[#0053e2] hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
             Open Photo Upload
           </a>
 
@@ -54,107 +58,143 @@
     </main>
 
     <script>
-      // Replace these two links once created in M365
-      const DATA_FORM_URL = "REPLACE_WITH_MICROSOFT_FORM_LINK";
       const FILE_UPLOAD_URL = "REPLACE_WITH_ONEDRIVE_REQUEST_FILES_LINK";
 
       const dictionary = {
         en: {
-          title: "Inbound Driver Safety Intake",
-          subtitle: "Please complete both steps before unloading.",
+          title: "Inbound Driver Photo Upload",
+          subtitle: "Upload 3 safety photos before unloading.",
           languageLabel: "Language",
-          step1: "Open the Driver Information Form and submit your details.",
-          step2: "Open the Photo Upload link and upload 3 photos:",
+          intakeLabel: "Intake ID",
+          intakeHelp: "Show this Intake ID to the Walmart associate.",
+          step1: "Take and upload 3 photos:",
           photo1: "Door photo",
           photo2: "Disconnected trailer photo",
           photo3: "Chocked wheels photo",
-          dataFormBtn: "Open Driver Information Form",
+          step2: "Tell the associate your Intake ID.",
           uploadBtn: "Open Photo Upload",
-          missingLinks: "Admin setup needed: add Form and Upload links in docs/index.html.",
+          copyBtn: "Copy",
+          copied: "Copied",
+          missingLink: "Admin setup needed: add OneDrive Request Files link in docs/index.html.",
         },
         es: {
-          title: "Registro de Seguridad para Conductores",
-          subtitle: "Complete ambos pasos antes de descargar.",
+          title: "Carga de Fotos del Conductor",
+          subtitle: "Suba 3 fotos de seguridad antes de descargar.",
           languageLabel: "Idioma",
-          step1: "Abra el formulario de información del conductor y envíe sus datos.",
-          step2: "Abra el enlace de carga de fotos y suba 3 fotos:",
+          intakeLabel: "ID de Registro",
+          intakeHelp: "Muestre este ID al asociado de Walmart.",
+          step1: "Tome y suba 3 fotos:",
           photo1: "Foto de la puerta",
           photo2: "Foto del remolque desconectado",
           photo3: "Foto de ruedas con cuñas",
-          dataFormBtn: "Abrir formulario de conductor",
+          step2: "Dígale al asociado su ID de registro.",
           uploadBtn: "Abrir carga de fotos",
-          missingLinks: "Se requiere configuración: agregue enlaces de formulario y carga en docs/index.html.",
+          copyBtn: "Copiar",
+          copied: "Copiado",
+          missingLink: "Falta configuración: agregue el enlace de OneDrive en docs/index.html.",
         },
         fr: {
-          title: "Formulaire Sécurité Conducteur",
-          subtitle: "Veuillez compléter les deux étapes avant le déchargement.",
+          title: "Téléversement Photos Conducteur",
+          subtitle: "Téléversez 3 photos sécurité avant le déchargement.",
           languageLabel: "Langue",
-          step1: "Ouvrez le formulaire d'information conducteur et envoyez vos informations.",
-          step2: "Ouvrez le lien de téléversement et chargez 3 photos :",
+          intakeLabel: "ID d'Entrée",
+          intakeHelp: "Montrez cet ID à l'associé Walmart.",
+          step1: "Prenez et téléversez 3 photos :",
           photo1: "Photo du quai",
           photo2: "Photo de la remorque déconnectée",
           photo3: "Photo des roues calées",
-          dataFormBtn: "Ouvrir le formulaire conducteur",
-          uploadBtn: "Ouvrir le téléversement photo",
-          missingLinks: "Configuration requise : ajoutez les liens Formulaire et Téléversement dans docs/index.html.",
+          step2: "Donnez votre ID d'entrée à l'associé.",
+          uploadBtn: "Ouvrir le téléversement",
+          copyBtn: "Copier",
+          copied: "Copié",
+          missingLink: "Configuration requise : ajoutez le lien OneDrive dans docs/index.html.",
         },
         ht: {
-          title: "Fòm Sekirite Chofè Antre",
-          subtitle: "Tanpri fini toude etap yo anvan dechajman.",
+          title: "Telechajman Foto Chofè",
+          subtitle: "Telechaje 3 foto sekirite anvan dechajman.",
           languageLabel: "Lang",
-          step1: "Louvri fòm enfòmasyon chofè a epi voye detay ou yo.",
-          step2: "Louvri lyen telechajman foto a epi telechaje 3 foto:",
+          intakeLabel: "ID Antre",
+          intakeHelp: "Montre ID sa a bay asosye Walmart la.",
+          step1: "Pran epi telechaje 3 foto:",
           photo1: "Foto pòt",
           photo2: "Foto trelè dekonekte",
           photo3: "Foto wou bloke",
-          dataFormBtn: "Louvri fòm chofè",
-          uploadBtn: "Louvri telechajman foto",
-          missingLinks: "Gen konfigirasyon ki manke: mete lyen fòm ak telechajman nan docs/index.html.",
+          step2: "Bay asosye a ID antre ou.",
+          uploadBtn: "Louvri telechajman",
+          copyBtn: "Kopye",
+          copied: "Kopye",
+          missingLink: "Konfigirasyon manke: mete lyen OneDrive nan docs/index.html.",
         },
       };
 
       const byId = (id) => document.getElementById(id);
+
+      function makeIntakeId() {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, "0");
+        const d = String(now.getDate()).padStart(2, "0");
+        const hh = String(now.getHours()).padStart(2, "0");
+        const mm = String(now.getMinutes()).padStart(2, "0");
+        const rnd = Math.floor(100 + Math.random() * 900);
+        return `6077-${y}${m}${d}-${hh}${mm}-${rnd}`;
+      }
 
       function applyLanguage(lang) {
         const t = dictionary[lang] || dictionary.en;
         byId("title").textContent = t.title;
         byId("subtitle").textContent = t.subtitle;
         byId("language_label").textContent = t.languageLabel;
+        byId("intake_label").textContent = t.intakeLabel;
+        byId("intake_help").textContent = t.intakeHelp;
         byId("step1").textContent = t.step1;
-        byId("step2").childNodes[0].nodeValue = `${t.step2} `;
         byId("photo1").textContent = t.photo1;
         byId("photo2").textContent = t.photo2;
         byId("photo3").textContent = t.photo3;
-        byId("dataFormBtn").textContent = t.dataFormBtn;
+        byId("step2").textContent = t.step2;
         byId("uploadBtn").textContent = t.uploadBtn;
+        byId("copyBtn").textContent = t.copyBtn;
       }
 
-      byId("language").addEventListener("change", (event) => {
-        applyLanguage(event.target.value);
-      });
-
-      function configureLinks() {
+      function configureLink() {
         const lang = byId("language").value;
         const t = dictionary[lang] || dictionary.en;
-        const dataBtn = byId("dataFormBtn");
-        const uploadBtn = byId("uploadBtn");
+        const btn = byId("uploadBtn");
         const status = byId("status");
 
-        dataBtn.href = DATA_FORM_URL;
-        uploadBtn.href = FILE_UPLOAD_URL;
-
-        const invalidDataLink = DATA_FORM_URL.includes("REPLACE_WITH");
+        btn.href = FILE_UPLOAD_URL;
         const invalidUploadLink = FILE_UPLOAD_URL.includes("REPLACE_WITH");
 
-        if (invalidDataLink || invalidUploadLink) {
-          status.textContent = t.missingLinks;
-          dataBtn.classList.add("pointer-events-none", "opacity-60");
-          uploadBtn.classList.add("pointer-events-none", "opacity-60");
+        if (invalidUploadLink) {
+          status.textContent = t.missingLink;
+          btn.classList.add("pointer-events-none", "opacity-60");
           return;
         }
 
         status.textContent = "";
       }
+
+      byId("language").addEventListener("change", (event) => {
+        applyLanguage(event.target.value);
+        configureLink();
+      });
+
+      byId("copyBtn").addEventListener("click", async () => {
+        const lang = byId("language").value;
+        const t = dictionary[lang] || dictionary.en;
+        const intakeId = byId("intakeId").value;
+        try {
+          await navigator.clipboard.writeText(intakeId);
+          byId("copyBtn").textContent = t.copied;
+          setTimeout(() => {
+            byId("copyBtn").textContent = t.copyBtn;
+          }, 1200);
+        } catch (_error) {
+          byId("status").textContent = `${t.copyBtn}: ${intakeId}`;
+        }
+      });
+
+      byId("intakeId").value = makeIntakeId();
 
       const currentUrl = window.location.href;
       QRCode.toCanvas(currentUrl, { width: 192 }, function (_error, canvas) {
@@ -166,7 +206,7 @@
       });
 
       applyLanguage("en");
-      configureLinks();
+      configureLink();
     </script>
   </body>
 </html>
