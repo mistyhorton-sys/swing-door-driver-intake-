@@ -86,3 +86,24 @@ Then deploy your source (recommended from Azure Portal Deployment Center using t
 - QR: `https://<app-name>.azurewebsites.net/qr`
 
 Use the **Form URL** as your QR destination for drivers.
+
+## No-credit-card deployment option (GitHub Pages + FormSubmit)
+If cloud platforms ask for payment setup, use this free path:
+
+1. Go to GitHub repo **Settings → Pages**
+2. Under **Build and deployment**:
+   - Source: `Deploy from a branch`
+   - Branch: `master`
+   - Folder: `/docs`
+3. Save and wait for Pages to publish.
+
+Public URL format:
+`https://<github-username>.github.io/<repo-name>/`
+
+For this repo, expected URL:
+`https://mistyhorton-sys.github.io/swing-door-driver-intake-/`
+
+### Email behavior
+- The static form posts to FormSubmit and forwards to `6077cro@walmart.com`
+- First submission triggers a one-time verification email to activate forwarding
+- A recipient must click the verification link once
