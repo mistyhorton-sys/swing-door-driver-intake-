@@ -88,7 +88,7 @@ def _send_email(
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse("index.html", {"request": request, "public_url": PUBLIC_URL})
+    return templates.TemplateResponse(request, "index.html", {"request": request, "public_url": PUBLIC_URL})
 
 
 @app.get("/health")
