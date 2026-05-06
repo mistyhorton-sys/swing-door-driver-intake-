@@ -40,40 +40,49 @@ uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 Open: http://127.0.0.1:8000
 
-## Deploy for off-network access (Render)
-This project includes `render.yaml` and a `Dockerfile` so you can deploy quickly.
+## Deploy for off-network access (Azure App Service)
+This project is prepped for Azure Linux Web App deployment.
 
-### 1) Push this repo to GitHub
+### Prerequisites
+- Azure subscription access
+- Azure CLI installed and logged in: `az login`
 
-```bash
-git remote add origin <your-github-repo-url>
-git push -u origin master
+### Option A: guided script (PowerShell)
+Run:
+
+```powershell
+./azure-deploy.ps1 \
+  -ResourceGroup rg-swing-door-intake \
+  -Location eastus \
+  -AppName swing-door-driver-intake-<unique> \
+  -PlanName plan-swing-door-intake \
+  -SmtpUser "<smtp-user>" \
+  -SmtpPassword "<smtp-password>" \
+  -MailFrom "<from-email>"
 ```
 
-### 2) Create the Render web service
-1. Sign in to Render
-2. New + → Blueprint
-3. Select your GitHub repo
-4. Render will detect `render.yaml`
+Then deploy your source (recommended from Azure Portal Deployment Center using this GitHub repo).
 
-### 3) Set secret environment variables in Render
-- `SMTP_USER`
-- `SMTP_PASSWORD`
-- `MAIL_FROM`
+### Option B: Azure Portal only
+1. Create **Web App** (Linux, Python 3.12)
+2. In Configuration → General settings:
+   - Startup Command: `bash startup.sh`
+3. In Configuration → Application settings, add:
+   - `SCM_DO_BUILD_DURING_DEPLOYMENT=true`
+   - `ENABLE_ORYX_BUILD=true`
+   - `SMTP_HOST=smtp.office365.com`
+   - `SMTP_PORT=587`
+   - `SMTP_USE_TLS=true`
+   - `SMTP_USER=<secret>`
+   - `SMTP_PASSWORD=<secret>`
+   - `MAIL_FROM=<secret>`
+   - `MAIL_TO=6077cro@walmart.com`
+   - `PUBLIC_URL=https://<app-name>.azurewebsites.net`
+4. Connect GitHub repo in Deployment Center and deploy.
 
-Already preconfigured in blueprint:
-- `SMTP_HOST=smtp.office365.com`
-- `SMTP_PORT=587`
-- `SMTP_USE_TLS=true`
-- `MAIL_TO=6077cro@walmart.com`
+### Verify
+- Health: `https://<app-name>.azurewebsites.net/health`
+- Form: `https://<app-name>.azurewebsites.net/`
+- QR: `https://<app-name>.azurewebsites.net/qr`
 
-### 4) Set `PUBLIC_URL`
-After deploy, set `PUBLIC_URL` to your Render app URL, for example:
-`https://swing-door-driver-intake.onrender.com`
-
-### 5) Verify
-- Health: `https://<your-url>/health`
-- Form: `https://<your-url>/`
-- QR image: `https://<your-url>/qr`
-
-Use the final `https://<your-url>/` in printed QR codes for drivers.
+Use the **Form URL** as your QR destination for drivers.
